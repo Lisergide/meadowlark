@@ -1,4 +1,5 @@
 const express = require('express');
+const fortune = require('./lib/fortune');
 
 const app = express();
 
@@ -10,14 +11,6 @@ const handlebars = require('express-handlebars')
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
 
-const fortunes = [
-    'Победи свои страхи, или они победят тебя.',
-    'Рекам нужны истоки',
-    'Не бойся неведомого',
-    'Тебя ждет приятный сюрприз',
-    'Будь проще везде, где только можно.'
-];
-
 app.set('port', process.env.PORT || 3021);
 
 app.use(express.static(__dirname + '/public'));
@@ -27,9 +20,7 @@ app.get('/', function (req, res) {
 });
 
 app.get('/about', function (req, res) {
-    const randomFortune =
-    fortunes[Math.floor(Math.random() * fortunes.length)];
-    res.render('about', { fortune: randomFortune });
+    res.render('about', { fortune: fortune.getFortune() });
 });
 
 // Обобщенный обработчик 404 (промежуточное ПО)
